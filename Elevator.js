@@ -13,6 +13,7 @@ class Building {
 		// }
 		let removed = [];
 		let removedTemp = [];
+		let iterations = 0;
 		//let inElevator = [];
 		console.log(`ЛЮДЕЙ ИЗНАЧАЛЬНО: ${this.amountPersons}`);
 		while(this.amountPersons > 0){
@@ -20,6 +21,7 @@ class Building {
 				console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
 			}
 			for(let i = 0; i < this.floors.length; i++){
+				iterations++;
 				let fl = this.floors[i];
 				// console.log('\n');
 				// console.log(fl.persons);
@@ -38,6 +40,7 @@ class Building {
 			console.log("ЕДЕМ ВНИЗ\n");
 			removed = [];
 			for(let i = this.floors.length - 1; i >= 0; i--){
+				iterations++;
 				let fl = this.floors[i];
 				// console.log('\n');
 				// console.log(fl.persons);
@@ -56,7 +59,7 @@ class Building {
 			removed = [];
 			// console.log('allPers: ' + this.amountPersons);
 		}
-
+		console.log(`Количество итераций цикла: ${iterations}`);
 		console.log('-----------');
 		for(let fl of this.floors){
 			console.log(fl);
@@ -86,6 +89,13 @@ class Building {
 	
 }
 
+function checkEmptyFloor(floor){
+	if(floor.floorNumber === 9){
+		return true;
+	}
+	let nextFloor = floor.floorNumber + 1;
+	
+}
 class Elevator {
 	personsInLift = [];
 	constructor(capacity, direction, personsInLift, currentFloor) {
