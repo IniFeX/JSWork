@@ -1,3 +1,4 @@
+
 class Building {
 	floors = [];
 	lift;
@@ -8,66 +9,114 @@ class Building {
 
     startProcess() {
         this.generate();
-		// for(let fl of this.floors){
-		// 	console.table(fl.persons);
-		// }
+		let iterations = 0;
 		let removed = [];
 		let removedTemp = [];
-		let iterations = 0;
-		//let inElevator = [];
 		console.log(`ЛЮДЕЙ ИЗНАЧАЛЬНО: ${this.amountPersons}`);
+		// while(this.amountPersons > 0){
+		// 	for(let fl of this.floors){
+		// 		console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
+		// 	}
+		// 	for(let i = this.lift.currentFloor; i < this.floors.length; i++){
+		// 		//console.log(this.lift.currentFloor);
+		// 		// console.log("i до: " + i);
+		// 		// let check = this.checkEmptyFloors(this.floors[i], 1);
+		// 		// if(check === false){ continue; } 
+		// 		// проще не обрабывать граничные значения
+		// 		// дело скорее всего в while
+		// 		// console.log("i после: " + i);
+		// 		iterations++;
+		// 		removed = this.move(this.floors[i], removed);
+		// 		i = this.checkEmptyFloors(this.floors[i], 1);
+		// 	}
+		// 	console.log(`Осталось людей: ${this.amountPersons}`);
+		// 	console.log(`Люди, которые вышли из лифта: \n`);
+		// 	console.log(removed);
+		// 	console.log("ЕДЕМ ВНИЗ\n");
+		// 	removed = [];
+		// 	for(let fl of this.floors){
+		// 		console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
+		// 	}
+		// 	for(let i = this.lift.currentFloor; i >= 0; i--){
+		// 		// console.log("i до: " + i);
+		// 		// let check = this.checkEmptyFloors(this.floors[i], -1);
+		// 		// if(check === false){ continue; } 
+		// 		// console.log("i после: " + i);
+		// 		iterations++;
+		// 		removed = this.move(this.floors[i], removed);
+		// 		i = this.checkEmptyFloors(this.floors[i], -1);
+		// 	}
+		// 	console.log(`Осталось людей: ${this.amountPersons}`);
+		// 	console.log(`Люди, которые вышли из лифта: \n`);
+		// 	console.log(removed);
+		// 	removed = [];
+		// 	if(iterations > 300) break;
+		// }
+		let floor = 0;
+		let direction = 1;
 		while(this.amountPersons > 0){
-			for(let fl of this.floors){
-				console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
-				console.table(fl.persons);
+			if(floor === 0){
+				for(let fl of this.floors){
+					console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
+				}		
 			}
-			for(let i = 0; i < this.floors.length; i++){
-				let fl = this.floors[i];
-				// console.log('\n');
-				// console.log(fl.persons);
-				//this.lift.fillLift(fl.persons, fl.floorNumber);
-				// console.log(`МЫ НА ${this.lift.currentFloor} ЭТАЖЕ`);
-				i = this.checkEmptyFloors(this.floors[i], 1);
-				iterations++;
-				removedTemp = removedTemp.concat(this.lift.exit(fl.floorNumber));
-				removed = removed.concat(removedTemp);
-				this.amountPersons -= removedTemp.length;
-				this.lift.fillLift(fl.persons, fl.floorNumber);
-				this.lift.personsInLift.forEach(person =>{console.log(`cur: ${person.currentFloor} des: ${person.desiredFloor}`)});
-				console.log(removedTemp);
-				console.log("\n");
-				removedTemp = [];
+			// for(let fl of this.floors){
+			// 	console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
+			// }
+			// for(let i = this.lift.currentFloor; i < this.floors.length; i++){
+			// 	//console.log(this.lift.currentFloor);
+			// 	// console.log("i до: " + i);
+			// 	// let check = this.checkEmptyFloors(this.floors[i], 1);
+			// 	// if(check === false){ continue; } 
+			// 	// проще не обрабывать граничные значения
+			// 	// дело скорее всего в while
+			// 	// console.log("i после: " + i);
+			// 	iterations++;
+			// 	removed = this.move(this.floors[i], removed);
+			// 	i = this.checkEmptyFloors(this.floors[i], 1);
+			// }
+			iterations++;
+			if(floor !== 0 || floor !== 8){
+				floor = this.checkEmptyFloors(this.floors[floor], direction);
 			}
-					console.log(`Осталось людей: ${this.amountPersons}`);
-					console.log(`Люди, которые вышли из лифта: \n`);
-					console.log(removed);
-			console.log("ЕДЕМ ВНИЗ\n");
-			removed = [];
-			for(let i = this.floors.length - 1; i >= 0; i--){
-				let fl = this.floors[i];
-				// console.log('\n');
-				// console.log(fl.persons);
-				//this.lift.fillLift(fl.persons, fl.floorNumber);
-				// console.log(`МЫ НА ${this.lift.currentFloor} ЭТАЖЕ`);
-				i = this.checkEmptyFloors(this.floors[i], -1);
-				iterations++;
-				removedTemp = removedTemp.concat(this.lift.exit(fl.floorNumber));
-				removed = removed.concat(removedTemp);
-				this.amountPersons -= removedTemp.length;
-				this.lift.fillLift(fl.persons, fl.floorNumber);
-				this.lift.personsInLift.forEach(person =>{console.log(`cur: ${person.currentFloor} des: ${person.desiredFloor}`)});
-				console.log(removedTemp);
-				console.log("\n");
-				removedTemp = [];
+			removed = this.move(this.floors[floor], removed);
+			if(floor === 8 && direction === 1) {
+				console.log("ЕДЕМ ВНИЗ\n");	
+				console.log(`Осталось людей: ${this.amountPersons}`);
+				console.log(`Люди, которые вышли из лифта: \n`);
+				console.log(removed);
+				removed = [];
+				direction = -1;
 			}
-					console.log(`Осталось людей: ${this.amountPersons}`);
-					console.log(`Люди, которые вышли из лифта: \n`);
-					console.log(removed);
-			removed = [];
-			// console.log('allPers: ' + this.amountPersons);
+			else if(floor === 0 && direction === -1){
+				console.log(`Осталось людей: ${this.amountPersons}`);
+				console.log(`Люди, которые вышли из лифта: \n`);
+				console.log(removed);
+				removed = [];
+				direction = 1;
+			}
+
+			floor += direction;
+
+			// for(let fl of this.floors){
+			// 	console.log(`на ${fl.floorNumber} этаже: ${fl.persons.length}`);
+			// }
+			// for(let i = this.lift.currentFloor; i >= 0; i--){
+			// 	// console.log("i до: " + i);
+			// 	// let check = this.checkEmptyFloors(this.floors[i], -1);
+			// 	// if(check === false){ continue; } 
+			// 	// console.log("i после: " + i);
+			// 	// iterations++;
+			// 	// removed = this.move(this.floors[i], removed);
+			// 	// i = this.checkEmptyFloors(this.floors[i], -1);
+			// }
+			// console.log(`Осталось людей: ${this.amountPersons}`);
+			// console.log(`Люди, которые вышли из лифта: \n`);
+			// console.log(removed);
+			if(iterations > 200) break;
 		}
+
 		console.log(`Количество итераций цикла: ${iterations}`);
-		console.log('-----------');
 		for(let fl of this.floors){
 			console.log(fl);
 		}
@@ -75,47 +124,66 @@ class Building {
 		console.log(this.lift);
     }
 
-	// move(from, length, increment){
-	// 	for(let i = from; i < length; i += increment){
-	// 		iterations++;
-	// 		let fl = this.floors[i];
-	// 		// console.log('\n');
-	// 		// console.log(fl.persons);
-	// 		this.lift.fillLift(fl.persons, fl.floorNumber);
-	// 		// console.log(`МЫ НА ${this.lift.currentFloor} ЭТАЖЕ`);
-	// 		removedTemp = removedTemp.concat(this.lift.exit());
-	// 		removed = removed.concat(removedTemp);
-	// 		this.amountPersons -= removedTemp.length;
-	// 		this.lift.fillLift(fl.persons, fl.floorNumber);
-	// 		removedTemp = [];
-	// 		console.log(this.lift.personsInLift);
-	// 		// console.table(this.lift.personsInLift);
-	// 	}
-	// }
+	move(floor, removed){
+		let removedTemp = [];
+		let fl = floor;
+		// console.log('\n');
+		// console.log(fl.persons);
+		//this.lift.fillLift(fl.persons, fl.floorNumber);
+		// console.log(`МЫ НА ${this.lift.currentFloor} ЭТАЖЕ`);
+		// i = this.checkEmptyFloors(this.floors[i], -1);
+		// fl = this.floors[i];
+		removedTemp = removedTemp.concat(this.lift.exit(fl.floorNumber));
+		removed = removed.concat(removedTemp);
+		this.amountPersons -= removedTemp.length;
+		this.lift.fillLift(fl.persons, fl.floorNumber);
+		this.lift.personsInLift.forEach(person =>{console.log(`cur: ${person.currentFloor} des: ${person.desiredFloor}`)});
+		console.log(`лифт на ${this.lift.currentFloor}`);
+		console.log(removedTemp);
+		console.log("\n");
+		removedTemp = [];
+		return removed;
+	}
 
 	checkEmptyFloors(currentFloor, direction){
 		let check = true;
 		if(currentFloor.floorNumber === 9 && direction === 1){
-			return 9;
+			return 8;
 		}
 		else if(currentFloor.floorNumber === 1 && direction === -1){
-			return 1;
+			return 0;
 		}
-		let nextFloor = this.floors[currentFloor.floorNumber + direction];
-		if(nextFloor.persons.length === 0 ){
-			check = false;
+		console.log("curflor " + currentFloor.floorNumber);
+		let nextFloor = this.floors[(currentFloor.floorNumber - 1) + direction];
+		console.log("nextCurFlor " + nextFloor.floorNumber);
+		if(nextFloor.persons.length > 0 ){
+			check = true;
 		}
-		this.lift.personsInLift.forEach(person => {
-			if(nextFloor.floorNumber === person.desiredFloor){
+		else{ check = false; }
+		for (let i = 0; i < this.lift.personsInLift.length; i++) {
+			if(this.lift.personsInLift[i].desiredFloor === nextFloor.floorNumber){
+				console.log(`людям нужно на ${nextFloor.floorNumber} этаж`);
 				check = true;
 			}
-		});
-		if(check){ return nextFloor.floorNumber; }
-		else{ return this.checkEmptyFloors(this.floors[nextFloor.floorNumber + direction])}
+		}
+		let flNum;
+		if(check === true){ 
+			flNum = currentFloor.floorNumber - 1
+			console.log("вернуло " + flNum);
+			return flNum;
+		}
+		else{ 
+			flNum = nextFloor.floorNumber - 1;
+			console.log("рекурсия\n пропущен id этаж: " + flNum);
+			flNum++;
+			return flNum;
+		}
+
 	}
 	
     generate(){
 		let emptyFloor = getRandom(2,8,10);
+		emptyFloor = 2;
 		console.log('emptyFloor: ' + emptyFloor);
 		let allPers = this.amountPersons;
 		for (let i = 1; i <= this.floorsNumber; i++) {
@@ -224,7 +292,6 @@ function getRandom(min, max, ecxept) {
 	}
 	return randNum;
 }
-
 
 const building = new Building(9, 100);
 building.startProcess();
