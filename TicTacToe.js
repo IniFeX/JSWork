@@ -138,10 +138,10 @@ function victory(sign, check){
             //console.log(pos);
             if(put(pos[0], pos[1], "o")){
                 if(sign === "x"){
-                    // console.log("Не дало победить");
+                    console.log("Не дало победить");
                 }
                 if(sign === "o"){
-                    // console.log("Победило");
+                    console.log("Победило");
                 }
                 count = 0;
                 if(sign === "o"){ return 1;}
@@ -150,7 +150,7 @@ function victory(sign, check){
         }
         if(count === 1 && check === "!center" && i >= 6){
             if(put(pos[0], pos[1], "o")){
-                // console.log("тыкнуло куда-нибудь");
+                console.log("тыкнуло куда-нибудь");
                 count = 0;
                 if(sign === "o" && check === "!center"){ return 3;}    
                 if(sign === "x" && check === "!center"){ return 3;}    
@@ -158,7 +158,7 @@ function victory(sign, check){
         }
         if(count === 1 && check === "center" && (i === 1 || i === 4)){
             if(put(pos[0], pos[1], "o")){
-                // console.log("тыкнуло ферзевый гамбит");
+                console.log("тыкнуло ферзевый гамбит");
                 count = 0;
                 if(sign === "o" && check === "center"){ return 3;}    
                 if(sign === "x" && check === "center"){ return 3;}    
@@ -190,7 +190,7 @@ function setRand(){
         console.log(randNum);  
         if(board[cell[0]][cell[1]] === '?'){
             put(cell[0], cell[1], "o");
-            // console.log("поставило ранд");
+            console.log("поставило ранд");
             break;  
         }
     }
@@ -265,51 +265,29 @@ function bot(){
     // }
     // console.log("check: " + check);
     if(check === 0){
-        // console.log("Ставит третий знак");
+        console.log("Ставит третий знак");
         check = victory("o");
     }
     if(check === 0){
-        // console.log("Не дает победить противнику");
+        console.log("Не дает победить противнику");
         check = victory("x");
     }
     if(check === 0 && center){
-        // console.log("ферзевый гамбит");
+        console.log("ферзевый гамбит");
         check = victory("o","center");
     }
     if(check === 0){ 
-        // console.log("Куда-нибудь от 'o'");
+        console.log("Куда-нибудь от 'o'");
         check = victory("o", "z");
     }
     if(check === 0){ 
-        // console.log("Куда-нибудь от 'x'");
+        console.log("Куда-нибудь от 'x'");
         setRand();
         // console.log("check: " + check);
     }
 
 }
 
-// let lastComb = [
-//     [[1,0], [2,1], [2,0]],
-//     [[2,1], [1,2]],
-//     [[1,2], [0,1]],
-//     [[0,1], [1,0]]
-// ]
-
-// function checkLastComb(){
-//     for (let i = 0; i < lastComb.length; i++) {
-//         let [a,b] = lastComb[i];
-//         let pos = [];
-//         sign = 'x';
-//         if(board[a[0]][a[1]] === sign){
-//             count++;
-//         }
-//         else{ pos = a; }
-//         if(board[b[0]][b[1]] === sign){
-//             count++;
-//         }
-
-//     }
-// }
 
 function print(){
     console.table(board);

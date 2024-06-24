@@ -156,16 +156,30 @@ class Building {
 		console.log("curflor " + currentFloor.floorNumber);
 		let nextFloor = this.floors[(currentFloor.floorNumber - 1) + direction];
 		console.log("nextCurFlor " + nextFloor.floorNumber);
-		if(nextFloor.persons.length > 0 ){
-			check = true;
-		}
-		else{ check = false; }
-		for (let i = 0; i < this.lift.personsInLift.length; i++) {
-			if(this.lift.personsInLift[i].desiredFloor === nextFloor.floorNumber){
-				console.log(`людям нужно на ${nextFloor.floorNumber} этаж`);
-				check = true;
+		while(nextFloor.persons.length === 0){
+			check = false;
+			for (let i = 0; i < this.lift.personsInLift.length; i++) {
+				if(this.lift.personsInLift[i].desiredFloor === nextFloor.floorNumber){
+					console.log(`людям нужно на ${nextFloor.floorNumber} этаж`);
+					check = true;
+					break;
+				}
+			}
+			if(check) break;
+			if(nextFloor.floorNumber !== 8 || nextFloor.floorNumber !== 0){
+				nextFloor = this.floors[(nextFloor.floorNumber - 1) + direction];
+			}	
+			if(nextFloor.floorNumber === 9 && direction === 1){
+				return 8;
+			}
+			else if(nextFloor.floorNumber === 1 && direction === -1){
+				return 0;
 			}
 		}
+		// if(nextFloor.persons.length === 0 ){
+		// 	check = false;
+		// }
+		// else{ check = true; }
 		let flNum;
 		if(check === true){ 
 			flNum = currentFloor.floorNumber - 1
