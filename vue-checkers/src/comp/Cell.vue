@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Checker from './Checker.vue';
+import Checker from "../comp/Checker.vue";
 
 export default {
   components: { Checker },
@@ -20,18 +20,18 @@ export default {
     cellStyle() {
       const [row, col] = this.cell.position;
       return {
-        backgroundColor: (row % 2 === col % 2) ? 'white' : 'gray',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: row % 2 === col % 2 ? "white" : "gray",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       };
     },
   },
   methods: {
     onClick() {
-      this.$emit('click');
+      this.$emit("click");
     },
   },
 };
