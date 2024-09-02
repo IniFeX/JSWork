@@ -1,17 +1,15 @@
 <template>
   <div id="app">
-    <Game />
+    <Board />
   </div>
 </template>
 
 <script>
 import Board from "./components/Board.vue";
-import Game from "@/components/Game.vue";
 
 export default {
   name: "App",
   components: {
-    Game,
     Board,
   },
 };

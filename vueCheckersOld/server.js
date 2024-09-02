@@ -15,6 +15,12 @@ function isChecker(index) {
 }
 
 function setColor(index){
+  // if(isChecker(index) === true){
+  //   return index < 24 && isChecker(index) ? "black-checker" : index >= 40 ? "white-checker" : null;
+  // }
+  // else{
+  //   return null;
+  // }
   if(!isChecker(index)){
     return null
   }
@@ -24,6 +30,9 @@ function setColor(index){
   else if(index >= 40 && isChecker(index)){
     return "white-checker"
   }
+  // else if(){
+  //   return null
+  // }
 }
 
 
@@ -33,7 +42,6 @@ let boardStart = Array.from({ length: 64 }, (_, index) => ({
   color: (Math.floor(index / 8) + index) % 2 === 0 ? "white" : "black",
   hasChecker: isChecker(index),
   checkerColor: setColor(index),
-  isQueen: /*false*/ index === 44 || index === 21 || index === 23,
 }));
 
 
@@ -43,16 +51,12 @@ let board = Array.from({ length: 64 }, (_, index) => ({
   color: (Math.floor(index / 8) + index) % 2 === 0 ? "white" : "black",
   hasChecker: isChecker(index),
   checkerColor: setColor(index),
-  isQueen: /*false*/index === 44 || index === 21 || index === 23,
 }));
 
-let validCheckers = [];
 let moves = [];
 let player = 'white-checker';
 
 app.get('/board', (req, res) => {
-  // board[46].isQueen = true;
-  // board[44].isQueen = true;
   res.json(board);
 });
 
@@ -66,17 +70,6 @@ app.get('/move', (req, res) => {
 
 app.get('/state', (req, res) => {
   res.json(player);
-})
-
-app.get('/bot', (req, res) => {
-  // const [randBlackChecker, randMove] = setTimeout(botAI, 2000, validCheckers) ;
-  // setValid(validCheckers);
-  const [randBlackChecker, randMove] = botAI(validCheckers) ;
-
-  res.json(
-    [randBlackChecker, randMove]
-    // setTimeout(botAI, 1000)
-  );
 })
 
 app.post('/state', (req, res) => {
@@ -94,31 +87,10 @@ app.post('/move', (req,res) => {
   res.sendStatus(200);
 })
 
-app.post('/botPost', (req,res)=>{
-  validCheckers = req.body;
-  res.sendStatus(200);
-})
 // app.post('/restart', (req,res) => {
 //   boardStart = req.body;
 //   res.sendStatus(200);
 // })
-
-function botAI(validCheckers) {
-  const randomBlackCheckerIndex = Math.floor(
-    Math.random() * validCheckers.length
-  );
-  const randBlackChecker = validCheckers[randomBlackCheckerIndex];
-
-  const randomBotMoveIndex = Math.floor(
-    Math.random() * randBlackChecker[1].length
-  );
-  const randMove = randBlackChecker[1][randomBotMoveIndex];
-
-  const newRandBlackChecker = randBlackChecker[0];
-
-  return [newRandBlackChecker, randMove];
-}
-
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

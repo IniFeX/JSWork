@@ -1,12 +1,14 @@
 import {createStore} from 'vuex';
 
 export default createStore({
-  state:{
-    currentPlayer: "white-checker"
-  },
-  getters: {
+  state: () => ({
+    currentPlayer: "white-checker",
+    validMoves: [],
+    selectedChecker: null,
+    isGameOver: false,
 
-  },
+  }) ,
+  getters: {},
   mutations:{
     changeState(state){
       switch (state.currentPlayer) {
@@ -17,6 +19,18 @@ export default createStore({
           state.currentPlayer = "white-checker";
           break;
       }
+    },
+    setState(state, currentPlayer){
+      state.currentPlayer = currentPlayer;
+    },
+    changeSelectedChecker(state, index){
+      state.selectedChecker = index;
+    },
+    changeValidMoves(state, moves){
+      state.validMoves = moves;
+    },
+    changeGameOver(state, gameOver){
+      state.isGameOver = gameOver;
     }
   },
   actions: {
