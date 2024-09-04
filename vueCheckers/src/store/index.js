@@ -1,4 +1,5 @@
 import {createStore} from 'vuex';
+import axios from "axios";
 
 export default createStore({
   state: () => ({
@@ -6,6 +7,7 @@ export default createStore({
     validMoves: [],
     selectedChecker: null,
     isGameOver: false,
+    currentMode: null,
 
   }) ,
   getters: {},
@@ -19,6 +21,9 @@ export default createStore({
           state.currentPlayer = "white-checker";
           break;
       }
+    },
+    changeCurrentMode(state, mode){
+      state.currentMode = mode;
     },
     setState(state, currentPlayer){
       state.currentPlayer = currentPlayer;
@@ -34,6 +39,12 @@ export default createStore({
     }
   },
   actions: {
-
+    async loadMode({state, commit}) {
+      const response = await axios.get(`http://localhost:3000/mode`);
+      commit("changeCurrentMode", response.data);
+    },
+    async saveMode({state, commit}) {
+      await axios.post("http://localhost:3000/saveMode", state.currentMode);
+    },
   },
 })

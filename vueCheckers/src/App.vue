@@ -7,6 +7,7 @@
 <script>
 import Board from "./components/Board.vue";
 import Game from "@/components/Game.vue";
+import SocketioService from '@/services/socketio.service.ts';
 
 export default {
   name: "App",
@@ -14,6 +15,9 @@ export default {
     Game,
     Board,
   },
+  // created() {
+  //   SocketioService.setupSocketConnection();
+  // }
 };
 </script>
 

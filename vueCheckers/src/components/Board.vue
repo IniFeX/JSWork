@@ -43,6 +43,10 @@ export default {
     Info,
     Cell,
   },
+  // props: {
+  //   board: Array,
+  //   currentMove: Array,
+  // },
   data() {
     return {
       board: [],
@@ -57,6 +61,8 @@ export default {
   async created() {
     await this.loadBoard();
     await this.loadMove();
+    // await this.$store.dispatch('loadMode');
+    console.log(this.$store.state.currentMode)
     // this.board[44].isQueen = true;
     // console.log(this.board);
     //await this.loadState();
@@ -90,8 +96,8 @@ export default {
     async loadBoard() {
       const response = await axios.get(`http://localhost:3000/board`);
       this.board = response.data;
-
     },
+
     async loadMove() {
       const response = await axios.get(`http://localhost:3000/move`);
       this.currentMove = response.data;
@@ -110,26 +116,34 @@ export default {
     async saveMove() {
       await axios.post("http://localhost:3000/move", this.currentMove);
     },
+
     async saveState() {
       await axios.post("http://localhost:3000/state", this.$store.state.currentPlayer);
     },
 
     async restartGame() {
       await this.restartBoard();
+      console.log("restarting...");
+      await this.saveBoard();
       this.$store.commit('changeSelectedChecker', null);
       this.$store.commit('setState', 'white-checker');
       // this.$store.state.currentPlayer = "white-checker";
       // this.validMoves = [];
       this.$store.commit('changeValidMoves', [])
+      this.$store.commit('changeCurrentMode', null)
       this.currentMove = [];
     },
 
     async completeMove(currentMove){
-      // if (this.$store.state.currentPlayer === "black-checker")await botMove(this.board);
+      if(this.$store.state.currentMode === 'bot'){
+        if (this.$store.state.currentPlayer === "black-checker")
+          await botMove(this.board);
+      }
       this.currentMove = this.currentMove.concat(currentMove);
       await this.saveBoard();
       await this.saveMove();
-      await this.saveState();
+      // await this.saveState();
+      await this.$store.dispatch('saveMode');
     },
 
     isHighlighted(index) {

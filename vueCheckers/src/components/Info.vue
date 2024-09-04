@@ -5,6 +5,7 @@
     <h3 class="curr-player">Black player: {{ currentBlackCheckers }}</h3>
     <h3 class="curr-player">White player: {{ currentWhiteCheckers }}</h3>
     <h3 class="curr-player">valid: {{ $store.state.validMoves }}</h3>
+    <h3 class="curr-player">mode: {{ $store.state.currentMode }}</h3>
     <textarea name="text" id="text" class="text-area">{{
       currentMove
     }}</textarea>

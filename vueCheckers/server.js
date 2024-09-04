@@ -1,11 +1,39 @@
 const express = require('express');
 const cors = require('cors');
+// const socketIo = require('socket.io');
 
 const app = express();
 const port = 3000;
 
-app.use(cors());
+
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: 'http://localhost:8080',
+    // methods: ['GET', 'POST']
+  }
+})
+
+app.use(cors({
+  origin: 'http://localhost:8080',
+}));
 app.use(express.json());
+
+// const server = http.createServer(app);
+// const io = socketIo(server);
+let connectedClients = 0;
+
+io.on('connection', (socket) => {
+  console.log('Новое соединение установлено');
+
+  connectedClients++;
+  io.sockets.emit('connected_clients', connectedClients); // Отправить количество подключенных клиентов всем клиентам
+
+  // socket.on('disconnect', () => {
+  //   connectedClients--;
+  //   io.sockets.emit('connected_clients', connectedClients); // Отправить количество подключенных клиентов всем клиентам
+  // });
+});
 
 function isChecker(index) {
   return (
@@ -49,6 +77,7 @@ let board = Array.from({ length: 64 }, (_, index) => ({
 let validCheckers = [];
 let moves = [];
 let player = 'white-checker';
+let mode = null;
 
 app.get('/board', (req, res) => {
   // board[46].isQueen = true;
@@ -66,6 +95,11 @@ app.get('/move', (req, res) => {
 
 app.get('/state', (req, res) => {
   res.json(player);
+})
+
+app.get('/mode', (req, res) => {
+  // console.log(mode)
+  res.json(mode);
 })
 
 app.get('/bot', (req, res) => {
@@ -89,6 +123,12 @@ app.post('/board', (req, res) => {
   res.sendStatus(200);
 });
 
+app.post('/saveMode', (req, res) => {
+  // console.log("save")
+  // console.log(req.body)
+  mode = req.body;
+  res.sendStatus(200);
+});
 app.post('/move', (req,res) => {
   moves = req.body;
   res.sendStatus(200);
@@ -119,7 +159,9 @@ function botAI(validCheckers) {
   return [newRandBlackChecker, randMove];
 }
 
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+http.listen(port, () => {
+  console.log(`Server with http is running on http://localhost:${port}`);
 });
+// app.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });

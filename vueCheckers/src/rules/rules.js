@@ -157,26 +157,26 @@ export function isUnderAttack(board, isQueen) {
       validWhiteCheckers.push(whiteCheckers[i].index);
     }
   }
-  console.log("quen chec from unser atac: ");
-  // console.log(blackQueen)
-  for (let i = 0; i < blackQueen.length; i++) {
-    if (getValidQueenAttack(blackQueen[i].index, board).length > 0) {
-      validQueenBlackCheckers.push(blackQueen[i].index);
-    }
-  }
-  for (let i = 0; i < whiteQueen.length; i++) {
-    if (getValidQueenAttack(whiteQueen[i].index, board).length > 0) {
-      validQueenWhiteCheckers.push(whiteQueen[i].index);
-    }
-  }
-  console.log(validWhiteCheckers)
-  console.log(validBlackCheckers)
-  validBlackCheckers = validBlackCheckers.concat(validQueenWhiteCheckers);
-  validWhiteCheckers = validWhiteCheckers.concat(validQueenBlackCheckers);
+  // console.log("quen chec from unser atac: ");
+  // // console.log(blackQueen)
+  // for (let i = 0; i < blackQueen.length; i++) {
+  //   if (getValidQueenAttack(blackQueen[i].index, board).length > 0) {
+  //     validQueenBlackCheckers.push(blackQueen[i].index);
+  //   }
+  // }
+  // for (let i = 0; i < whiteQueen.length; i++) {
+  //   if (getValidQueenAttack(whiteQueen[i].index, board).length > 0) {
+  //     validQueenWhiteCheckers.push(whiteQueen[i].index);
+  //   }
+  // }
+  // console.log(validWhiteCheckers)
+  // console.log(validBlackCheckers)
+  // validBlackCheckers = validBlackCheckers.concat(validQueenWhiteCheckers);
+  // validWhiteCheckers = validWhiteCheckers.concat(validQueenBlackCheckers);
 
 
-  console.log(validBlackCheckers);
-  console.log(validWhiteCheckers);
+  // console.log(validBlackCheckers);
+  // console.log(validWhiteCheckers);
 
   // console.log(validWhiteCheckers)
 

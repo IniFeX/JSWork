@@ -46,12 +46,17 @@ export default {
       }
       let selectedChecker = null;
       let validMoves = [];
+      const mode = this.$store.state.currentMode;
+
       if (
         this.board[index].hasChecker &&
         this.board[index].checkerColor === this.$store.state.currentPlayer
         // && this.board[index].checkerColor === "white-checker"
         //&& validWhiteCheckers.includes(index) && validWhiteCheckers.length > 0
       ) {
+        if(mode === "bot" && this.board[index].checkerColor === "black-checker") {
+          return;
+        }
         selectedChecker = index;
         // console.log(this.isSelected);
         // console.log("selected:" + this.selectedChecker);
